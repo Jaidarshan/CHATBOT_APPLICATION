@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
-import SetApiKey from './SetApiKey';
-import Chatbot from './Chatbot';
+import Chatbot from './Chatbot'; // No need to import SetApiKey separately
 
 function App() {
     return (
@@ -11,7 +10,6 @@ function App() {
             </header>
             <main className="App-main">
                 <Chatbot />
-                <SetApiKey />
             </main>
         </div>
     );

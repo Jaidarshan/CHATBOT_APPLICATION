@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
+import SetApiKey from './SetApiKey'; // Import the SetApiKey component
 
 const Chatbot = () => {
     const [prompt, setPrompt] = useState('');
@@ -35,7 +36,6 @@ const Chatbot = () => {
             <div className="chat-history">
                 {conversation.map((entry, index) => (
                     <div key={index} className={`chat-entry ${entry.type}`}>
-                        <strong>{entry.type === 'user' ? 'You' : 'Bot'}:</strong>
                         <div className="chat-message">
                             {entry.type === 'bot' ? (
                                 <ReactMarkdown>{entry.text}</ReactMarkdown>
@@ -48,6 +48,7 @@ const Chatbot = () => {
             </div>
 
             <form className="chat-input-form" onSubmit={handleSubmit}>
+                <SetApiKey /> {/* Include SetApiKey button to the left of the input field */}
                 <textarea
                     placeholder="Enter your prompt here..."
                     value={prompt}

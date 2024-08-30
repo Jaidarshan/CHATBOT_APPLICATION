@@ -43,45 +43,6 @@ body, html {
   overflow: hidden;
 }
 
-.set-api-key {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.api-key-modal {
-  position: fixed;
-  bottom: 80px;
-  left: 20px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.api-key-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
-.api-key-set-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
 .chat-container {
   flex-grow: 1;
   display: flex;
@@ -130,18 +91,41 @@ body, html {
 }
 
 .chat-input-form {
-  display: flex;
+  display: flex; /* Ensures items are aligned horizontally */
   align-items: center;
   width: 100%;
   margin-top: 10px;
 }
 
+.set-api-key {
+  margin-right: 10px; /* Spacing between the SetApiKey button and the input field */
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 14px;
+  outline: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.set-api-key:hover {
+  background-color: #0056b3;
+}
+
+.set-api-key:active {
+  background-color: #004494;
+  transform: scale(0.98);
+}
+
 .chat-input {
-  flex-grow: 1;
+  flex-grow: 1; /* Takes up remaining space */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-right: 10px;
+  margin-right: 10px; /* Spacing between input and send button */
   resize: none;
   height: 50px;
 }
@@ -183,8 +167,24 @@ body, html {
       height: auto;
   }
 
+  .chat-input-form {
+      flex-direction: column; /* Stack items vertically on small screens */
+      align-items: stretch;
+  }
+
   .set-api-key {
-      bottom: 10px;
-      left: 10px;
+      margin-right: 0; /* Remove margin for better stacking */
+      margin-bottom: 10px; /* Add some margin below the button */
+      width: 100%; /* Full width on small screens */
+  }
+
+  .chat-input {
+      margin-right: 0; /* Remove margin for better stacking */
+      margin-bottom: 10px; /* Add margin between input and send button */
+      width: 100%; /* Full width on small screens */
+  }
+
+  .send-button {
+      width: 100%; /* Full width on small screens */
   }
 }
