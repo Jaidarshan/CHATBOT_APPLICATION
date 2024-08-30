@@ -31,6 +31,13 @@ const Chatbot = () => {
         }
     };
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); // Prevents the default newline character from being inserted
+            handleSubmit(event); // Calls the submit function
+        }
+    };
+
     return (
         <div className="chat-container">
             <div className="chat-history">
@@ -48,11 +55,12 @@ const Chatbot = () => {
             </div>
 
             <form className="chat-input-form" onSubmit={handleSubmit}>
-                <SetApiKey /> {/* Include SetApiKey button to the left of the input field */}
+                <SetApiKey /> 
                 <textarea
                     placeholder="Enter your prompt here..."
                     value={prompt}
                     onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
                     className="chat-input"
                 />
                 <button type="submit" className="send-button">Send</button>

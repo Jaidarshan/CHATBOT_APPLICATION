@@ -33,8 +33,8 @@ const SetApiKey = () => {
     };
 
     return (
-        <div className="set-api-key">
-            <button onClick={handleOpenModal}>Set API Key</button>
+        <div>
+            <button onClick={handleOpenModal} className="set-api-key">Set API Key</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={handleCloseModal}
@@ -63,10 +63,10 @@ const SetApiKey = () => {
                         onChange={handleInputChange}
                         style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
                     />
-                    <button type="submit">Submit</button>
+                    <button type="submit" className='button'>Submit</button>
                 </form>
                 {message && <p>{message}</p>}
-                <button onClick={handleCloseModal} style={{ marginTop: '10px' }}>Close</button>
+                <button onClick={handleCloseModal} style={{ marginTop: '10px' }} className='button'>Close</button>
             </Modal>
         </div>
     );
