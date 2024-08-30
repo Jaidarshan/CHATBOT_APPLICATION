@@ -43,6 +43,17 @@ body, html {
   overflow: hidden;
 }
 
+.chat-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #888;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+
 .chat-container {
   flex-grow: 1;
   display: flex;

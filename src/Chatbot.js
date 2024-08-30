@@ -41,17 +41,23 @@ const Chatbot = () => {
     return (
         <div className="chat-container">
             <div className="chat-history">
-                {conversation.map((entry, index) => (
-                    <div key={index} className={`chat-entry ${entry.type}`}>
-                        <div className="chat-message">
-                            {entry.type === 'bot' ? (
-                                <ReactMarkdown>{entry.text}</ReactMarkdown>
-                            ) : (
-                                <p>{entry.text}</p>
-                            )}
-                        </div>
+                {conversation.length === 0 ? (
+                    <div className="chat-placeholder">
+                        <p>Welcome! Start the conversation by typing your question in the box below.</p>
                     </div>
-                ))}
+                ) : (
+                    conversation.map((entry, index) => (
+                        <div key={index} className={`chat-entry ${entry.type}`}>
+                            <div className="chat-message">
+                                {entry.type === 'bot' ? (
+                                    <ReactMarkdown>{entry.text}</ReactMarkdown>
+                                ) : (
+                                    <p>{entry.text}</p>
+                                )}
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
 
             <form className="chat-input-form" onSubmit={handleSubmit}>
