@@ -25,7 +25,7 @@ const Chatbot = () => {
             const res = await axios.post('http://localhost:5000/api/chat', { prompt });
             const responseText = res.data.response;
             setConversation(prev => [...prev, { type: 'bot', text: responseText }]);
-            setPrompt('');
+            
         } catch (err) {
             setError(err.response ? err.response.data.error : 'Error sending prompt');
         }
@@ -35,7 +35,9 @@ const Chatbot = () => {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault(); // Prevents the default newline character from being inserted
             handleSubmit(event); // Calls the submit function
+            setPrompt('');
         }
+        
     };
 
     return (
