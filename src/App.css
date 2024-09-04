@@ -32,6 +32,13 @@ body, html {
   text-align: center;
   flex-shrink: 0;
   border-bottom: 2px solid #ddd;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.App-header h1 {
+  flex-grow: 1; /* Allows the heading to grow and be centered */
 }
 
 .App-main {
@@ -98,7 +105,7 @@ body, html {
 }
 
 .chat-entry.user .chat-message {
-  background-color: #b2dfdb;
+  background-color: #e0e0e0;
 }
 
 .chat-input-form {
@@ -224,4 +231,109 @@ body, html {
 .button:focus {
   outline: none;               /* Removes default outline */
   box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Adds a focus ring for accessibility */
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.App-header {
+  padding: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  border-bottom: 2px solid #ddd;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.App-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+  padding: 20px;
+  overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.chat-placeholder, .chat-container, .chat-history, .chat-entry, .chat-input-form, .error-message, .button, .set-api-key {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode styles */
+.dark-mode {
+  background-color: #2e2e2e;
+  color: #f1f1f1;
+}
+
+.dark-mode .App-header {
+  background-color: #444;
+  color: #f1f1f1;
+  border-bottom: 2px solid #555;
+}
+
+.dark-mode .chat-container {
+  background-color: #3a3a3a;
+  border: 1px solid #555;
+}
+
+.dark-mode .chat-history {
+  background-color: #444;
+  border: 1px solid #555;
+}
+
+.dark-mode .chat-entry.user .chat-message {
+  background-color: #555;
+}
+
+.dark-mode .chat-entry.bot .chat-message {
+  background-color: #555;
+}
+
+.dark-mode .chat-input {
+  background-color: #555;
+  color: #f1f1f1;
+  border: 1px solid #666;
+}
+
+.dark-mode .send-button, .dark-mode .set-api-key, .dark-mode .button {
+  background-color: #007bff;
+  color: #f1f1f1;
+  border: 1px solid #666;
+}
+
+.dark-mode .send-button:hover, .dark-mode .set-api-key:hover, .dark-mode .button:hover {
+  background-color: #0056b3;
+}
+
+.dark-mode .error-message {
+  color: #ff6b6b;
+}
+
+.toggle-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: absolute; /* Absolute positioning for right alignment */
+  right: 20px; /* Position the button 20px from the right edge */
+  top: 50%; /* Center vertically within the header */
+  transform: translateY(-50%);
+}
+
+.toggle-button:hover {
+  background-color: #0056b3;
+}
+
+.toggle-button:focus {
+  outline: none;
 }
