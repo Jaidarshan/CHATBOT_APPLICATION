@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-body, html {
+body,
+html {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
   width: 100%;
@@ -17,12 +18,14 @@ body, html {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh; /* Full screen height */
+  height: 100vh;
+  /* Full screen height */
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .App-header {
@@ -35,10 +38,12 @@ body, html {
   display: flex;
   justify-content: center;
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .App-header h1 {
-  flex-grow: 1; /* Allows the heading to grow and be centered */
+  flex-grow: 1;
+  /* Allows the heading to grow and be centered */
 }
 
 .App-main {
@@ -48,6 +53,7 @@ body, html {
   flex-grow: 1;
   padding: 20px;
   overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .chat-placeholder {
@@ -59,7 +65,6 @@ body, html {
   font-size: 1.2em;
   text-align: center;
 }
-
 
 .chat-container {
   flex-grow: 1;
@@ -108,15 +113,46 @@ body, html {
   background-color: #e0e0e0;
 }
 
+/* Ensure list items (both ordered and unordered) are styled properly inside the bot's reply */
+.chat-entry.bot .chat-message ul,
+.chat-entry.bot .chat-message ol {
+  margin: 0;
+  /* Remove any default margins */
+  padding-left: 20px;
+  /* Add padding so the list is indented properly */
+  list-style-position: inside;
+  /* Ensure bullet points are inside the box */
+}
+
+.chat-entry.bot .chat-message li {
+  padding: 5px 0;
+  /* Add some space between list items */
+  line-height: 1.5;
+  /* Improve readability */
+}
+
+/* Ensure numbers or bullet points are styled properly */
+.chat-entry.bot .chat-message ol {
+  list-style-type: decimal;
+  /* Numbering for ordered lists */
+}
+
+.chat-entry.bot .chat-message ul {
+  list-style-type: disc;
+  /* Bullet points for unordered lists */
+}
+
 .chat-input-form {
-  display: flex; /* Ensures items are aligned horizontally */
+  display: flex;
+  /* Ensures items are aligned horizontally */
   align-items: center;
   width: 100%;
   margin-top: 10px;
 }
 
 .set-api-key {
-  margin-right: 10px; /* Spacing between the SetApiKey button and the input field */
+  margin-right: 10px;
+  /* Spacing between the SetApiKey button and the input field */
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -139,22 +175,30 @@ body, html {
 }
 
 .chat-input {
-  flex-grow: 1; /* Takes up remaining space */
+  flex-grow: 1;
+  /* Takes up remaining space */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin-right: 10px; /* Spacing between input and send button */
+  margin-right: 10px;
+  /* Spacing between input and send button */
   resize: none;
   height: 50px;
 }
 
 .send-button {
-  padding: 10px 20px;
+  padding: 0;
   background-color: #007bff;
-  color: white;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
+  border-radius: 10px;
+  width: 48px;
+  height: 48px;
+}
+
+.send-icon {
+  width: 40px;
+  height: 32px;
 }
 
 .send-button:hover {
@@ -170,100 +214,49 @@ body, html {
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .App {
-      flex-direction: column;
-      height: 100vh;
-      width: 100%;
-      border-radius: 0;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    border-radius: 0;
   }
 
   .App-main {
-      padding: 10px;
+    padding: 10px;
   }
 
   .chat-container {
-      margin-right: 0;
-      height: auto;
+    margin-right: 0;
+    height: auto;
   }
 
   .chat-input-form {
-      flex-direction: column; /* Stack items vertically on small screens */
-      align-items: stretch;
+    flex-direction: column;
+    /* Stack items vertically on small screens */
+    align-items: stretch;
   }
 
   .set-api-key {
-      margin-right: 0; /* Remove margin for better stacking */
-      margin-bottom: 10px; /* Add some margin below the button */
-      width: 100%; /* Full width on small screens */
+    margin-right: 0;
+    /* Remove margin for better stacking */
+    margin-bottom: 10px;
+    /* Add some margin below the button */
+    width: 100%;
+    /* Full width on small screens */
   }
 
   .chat-input {
-      margin-right: 0; /* Remove margin for better stacking */
-      margin-bottom: 10px; /* Add margin between input and send button */
-      width: 100%; /* Full width on small screens */
+    margin-right: 0;
+    /* Remove margin for better stacking */
+    margin-bottom: 10px;
+    /* Add margin between input and send button */
+    width: 100%;
+    /* Full width on small screens */
   }
 
   .send-button {
-      width: 100%; /* Full width on small screens */
+    width: 100%;
+    /* Full width on small screens */
   }
-}
-
-.button {
-  padding: 5px 10px;          /* Adds padding for a better click area */
-  background-color: #007bff;   /* Blue background color */
-  color: white;                /* White text color */
-  border: none;                /* Removes default border */
-  border-radius: 5px;          /* Rounds the corners */
-  cursor: pointer;             /* Changes cursor to pointer on hover */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
-  font-size: 14px;             /* Sets the font size */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition effects */
-}
-
-.button:hover {
-  background-color: #0056b3;   /* Darker blue on hover */
-}
-
-.button:active {
-  background-color: #004494;   /* Even darker blue when active */
-  transform: scale(0.98);      /* Slightly scales down on click */
-}
-
-.button:focus {
-  outline: none;               /* Removes default outline */
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Adds a focus ring for accessibility */
-}
-
-.App {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.App-header {
-  padding: 20px;
-  text-align: center;
-  flex-shrink: 0;
-  border-bottom: 2px solid #ddd;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.App-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
-  padding: 20px;
-  overflow: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.chat-placeholder, .chat-container, .chat-history, .chat-entry, .chat-input-form, .error-message, .button, .set-api-key {
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Dark mode styles */
@@ -302,13 +295,17 @@ body, html {
   border: 1px solid #666;
 }
 
-.dark-mode .send-button, .dark-mode .set-api-key, .dark-mode .button {
+.dark-mode .send-button,
+.dark-mode .set-api-key,
+.dark-mode .button {
   background-color: #007bff;
   color: #f1f1f1;
   border: 1px solid #666;
 }
 
-.dark-mode .send-button:hover, .dark-mode .set-api-key:hover, .dark-mode .button:hover {
+.dark-mode .send-button:hover,
+.dark-mode .set-api-key:hover,
+.dark-mode .button:hover {
   background-color: #0056b3;
 }
 
@@ -324,9 +321,12 @@ body, html {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  position: absolute; /* Absolute positioning for right alignment */
-  right: 20px; /* Position the button 20px from the right edge */
-  top: 50%; /* Center vertically within the header */
+  position: absolute;
+  /* Absolute positioning for right alignment */
+  right: 20px;
+  /* Position the button 20px from the right edge */
+  top: 50%;
+  /* Center vertically within the header */
   transform: translateY(-50%);
 }
 

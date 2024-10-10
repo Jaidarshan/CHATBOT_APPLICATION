@@ -71,7 +71,9 @@ const Chatbot = () => {
                     onKeyDown={handleKeyDown}
                     className="chat-input"
                 />
-                <button type="submit" className="send-button">Send</button>
+                <button type="submit" className="send-button">
+                <img src="/send_icon_white.png" alt="Send" className="send-icon" />
+                </button>
             </form>
 
             {error && <p className="error-message"><strong>Error:</strong> {error}</p>}
