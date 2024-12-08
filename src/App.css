@@ -337,3 +337,42 @@ html {
 .toggle-button:focus {
   outline: none;
 }
+
+/* Chat History Container */
+.chat-history {
+  position: relative;
+  /* Make sure scroll-down button is positioned relative to this */
+  padding-bottom: 60px;
+  /* Prevent button overlap with the input field */
+}
+
+/* Scroll Down Button Styles */
+.scroll-down-button {
+  position: absolute;
+  bottom: 10px;
+  /* Position the button just above the input area */
+  right: 10px;
+  /* Adjust spacing from the right edge */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index: 10;
+  /* Ensure the button stays above other content */
+}
+
+.scroll-down-button:hover {
+  background-color: #0056b3;
+}
+
+.scroll-down-button:focus {
+  outline: none;
+}

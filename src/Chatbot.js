@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import SetApiKey from './SetApiKey'; // Import the SetApiKey component
@@ -7,6 +7,7 @@ const Chatbot = () => {
     const [prompt, setPrompt] = useState('');
     const [conversation, setConversation] = useState([]);
     const [error, setError] = useState('');
+    const [showScrollButton, setShowScrollButton] = useState(false);
 
     const handleInputChange = (event) => {
         setPrompt(event.target.value);
@@ -37,7 +38,30 @@ const Chatbot = () => {
             handleSubmit(event); // Calls the submit function
             setPrompt('');
         }
-        
+    };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const chatHistory = document.querySelector('.chat-history');
+            const scrollThreshold = chatHistory.scrollHeight - chatHistory.clientHeight - 50; // Adjust based on your needs
+            if (chatHistory.scrollTop < scrollThreshold) {
+                setShowScrollButton(true);
+            } else {
+                setShowScrollButton(false);
+            }
+        };
+
+        const chatHistory = document.querySelector('.chat-history');
+        chatHistory.addEventListener('scroll', handleScroll);
+
+        return () => {
+            chatHistory.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    const scrollToBottom = () => {
+        const chatHistory = document.querySelector('.chat-history');
+        chatHistory.scrollTop = chatHistory.scrollHeight;
     };
 
     return (
@@ -62,6 +86,12 @@ const Chatbot = () => {
                 )}
             </div>
 
+            {showScrollButton && (
+                <button className="scroll-down-button" onClick={scrollToBottom}>
+                    ↓
+                </button>
+            )}
+
             <form className="chat-input-form" onSubmit={handleSubmit}>
                 <SetApiKey /> 
                 <textarea
@@ -72,7 +102,7 @@ const Chatbot = () => {
                     className="chat-input"
                 />
                 <button type="submit" className="send-button">
-                <img src="/send_icon_white.png" alt="Send" className="send-icon" />
+                    <img src="/send_icon_white.png" alt="Send" className="send-icon" />
                 </button>
             </form>
 
