@@ -5,12 +5,17 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 const SetApiKey = () => {
-    const [apiKey, setApiKey] = useState('');
+    const [geminiApiKey, setGeminiApiKey] = useState('');
+    const [monsterApiKey, setMonsterApiKey] = useState('');
     const [message, setMessage] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const handleInputChange = (event) => {
-        setApiKey(event.target.value);
+    const handleGeminiInputChange = (event) => {
+        setGeminiApiKey(event.target.value);
+    };
+
+    const handleMonsterInputChange = (event) => {
+        setMonsterApiKey(event.target.value);
     };
 
     const handleOpenModal = () => {
@@ -25,16 +30,19 @@ const SetApiKey = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/api/set-api-key', { api_key: apiKey });
+            const response = await axios.post('http://localhost:5000/api/set-api-key', {
+                api_key: geminiApiKey,
+                monster_api_key: monsterApiKey,
+            });
             setMessage(response.data.message);
         } catch (error) {
-            setMessage(error.response ? error.response.data.error : 'Error setting API key');
+            setMessage(error.response ? error.response.data.error : 'Error setting API keys');
         }
     };
 
     return (
         <div>
-            <button onClick={handleOpenModal} className="set-api-key">Set API Key</button>
+            <button onClick={handleOpenModal} className="set-api-key">Set API Keys</button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={handleCloseModal}
@@ -54,13 +62,20 @@ const SetApiKey = () => {
                     },
                 }}
             >
-                <h2>Enter API Key</h2>
+                <h2>Enter API Keys</h2>
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
-                        placeholder="Enter API Key"
-                        value={apiKey}
-                        onChange={handleInputChange}
+                        placeholder="Enter Gemini API Key"
+                        value={geminiApiKey}
+                        onChange={handleGeminiInputChange}
+                        style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Monster API Key"
+                        value={monsterApiKey}
+                        onChange={handleMonsterInputChange}
                         style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
                     />
                     <button type="submit" className='button'>Submit</button>

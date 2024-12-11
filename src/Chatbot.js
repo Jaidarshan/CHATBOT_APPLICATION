@@ -23,10 +23,18 @@ const Chatbot = () => {
 
         try {
             setConversation(prev => [...prev, { type: 'user', text: prompt }]);
+
             const res = await axios.post('http://localhost:5000/api/chat', { prompt });
-            const responseText = res.data.response;
-            setConversation(prev => [...prev, { type: 'bot', text: responseText }]);
-            
+            const response = res.data;
+
+            if (response.image_url) {
+                // If it's an image URL response, add the image to the conversation
+                setConversation(prev => [...prev, { type: 'bot', imageUrl: response.image_url }]);
+            } else {
+                // If it's a text response, add it as text
+                setConversation(prev => [...prev, { type: 'bot', text: response.response }]);
+            }
+
         } catch (err) {
             setError(err.response ? err.response.data.error : 'Error sending prompt');
         }
@@ -76,7 +84,16 @@ const Chatbot = () => {
                         <div key={index} className={`chat-entry ${entry.type}`}>
                             <div className="chat-message">
                                 {entry.type === 'bot' ? (
-                                    <ReactMarkdown>{entry.text}</ReactMarkdown>
+                                    entry.imageUrl ? (
+                                        // Render the image if the entry contains an image URL
+                                        <div className="image-container">
+                                            <img src={entry.imageUrl} alt="A generated illustration" className="generated-image" />
+                                        </div>
+
+                                    ) : (
+                                        // Render the text if it's a regular text response
+                                        <ReactMarkdown>{entry.text}</ReactMarkdown>
+                                    )
                                 ) : (
                                     <p>{entry.text}</p>
                                 )}
@@ -93,7 +110,7 @@ const Chatbot = () => {
             )}
 
             <form className="chat-input-form" onSubmit={handleSubmit}>
-                <SetApiKey /> 
+                <SetApiKey />
                 <textarea
                     placeholder="Enter your prompt here..."
                     value={prompt}

@@ -43,7 +43,6 @@ html {
 
 .App-header h1 {
   flex-grow: 1;
-  /* Allows the heading to grow and be centered */
 }
 
 .App-main {
@@ -113,38 +112,28 @@ html {
   background-color: #e0e0e0;
 }
 
-/* Ensure list items (both ordered and unordered) are styled properly inside the bot's reply */
 .chat-entry.bot .chat-message ul,
 .chat-entry.bot .chat-message ol {
   margin: 0;
-  /* Remove any default margins */
   padding-left: 20px;
-  /* Add padding so the list is indented properly */
   list-style-position: inside;
-  /* Ensure bullet points are inside the box */
 }
 
 .chat-entry.bot .chat-message li {
   padding: 5px 0;
-  /* Add some space between list items */
   line-height: 1.5;
-  /* Improve readability */
 }
 
-/* Ensure numbers or bullet points are styled properly */
 .chat-entry.bot .chat-message ol {
   list-style-type: decimal;
-  /* Numbering for ordered lists */
 }
 
 .chat-entry.bot .chat-message ul {
   list-style-type: disc;
-  /* Bullet points for unordered lists */
 }
 
 .chat-input-form {
   display: flex;
-  /* Ensures items are aligned horizontally */
   align-items: center;
   width: 100%;
   margin-top: 10px;
@@ -152,7 +141,6 @@ html {
 
 .set-api-key {
   margin-right: 10px;
-  /* Spacing between the SetApiKey button and the input field */
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
@@ -176,12 +164,10 @@ html {
 
 .chat-input {
   flex-grow: 1;
-  /* Takes up remaining space */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-right: 10px;
-  /* Spacing between input and send button */
   resize: none;
   height: 50px;
 }
@@ -231,31 +217,23 @@ html {
 
   .chat-input-form {
     flex-direction: column;
-    /* Stack items vertically on small screens */
     align-items: stretch;
   }
 
   .set-api-key {
     margin-right: 0;
-    /* Remove margin for better stacking */
     margin-bottom: 10px;
-    /* Add some margin below the button */
     width: 100%;
-    /* Full width on small screens */
   }
 
   .chat-input {
     margin-right: 0;
-    /* Remove margin for better stacking */
     margin-bottom: 10px;
-    /* Add margin between input and send button */
     width: 100%;
-    /* Full width on small screens */
   }
 
   .send-button {
     width: 100%;
-    /* Full width on small screens */
   }
 }
 
@@ -322,11 +300,8 @@ html {
   cursor: pointer;
   transition: background-color 0.3s ease;
   position: absolute;
-  /* Absolute positioning for right alignment */
   right: 20px;
-  /* Position the button 20px from the right edge */
   top: 50%;
-  /* Center vertically within the header */
   transform: translateY(-50%);
 }
 
@@ -341,7 +316,6 @@ html {
 /* Chat History Container */
 .chat-history {
   position: relative;
-  /* Make sure scroll-down button is positioned relative to this */
   padding-bottom: 60px;
   /* Prevent button overlap with the input field */
 }
@@ -375,4 +349,19 @@ html {
 
 .scroll-down-button:focus {
   outline: none;
+}
+
+.image-container {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin: 10px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.generated-image {
+  width: 100%;
+  height: auto;
 }
