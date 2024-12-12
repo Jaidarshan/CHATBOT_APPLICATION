@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import SetApiKey from './SetApiKey'; // Import the SetApiKey component
+import SetApiKey from './SetApiKey'; 
 
 const Chatbot = () => {
     const [prompt, setPrompt] = useState('');
@@ -28,10 +28,8 @@ const Chatbot = () => {
             const response = res.data;
 
             if (response.image_url) {
-                // If it's an image URL response, add the image to the conversation
                 setConversation(prev => [...prev, { type: 'bot', imageUrl: response.image_url }]);
             } else {
-                // If it's a text response, add it as text
                 setConversation(prev => [...prev, { type: 'bot', text: response.response }]);
             }
 
@@ -42,8 +40,8 @@ const Chatbot = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); // Prevents the default newline character from being inserted
-            handleSubmit(event); // Calls the submit function
+            event.preventDefault(); 
+            handleSubmit(event); 
             setPrompt('');
         }
     };
@@ -51,7 +49,7 @@ const Chatbot = () => {
     useEffect(() => {
         const handleScroll = () => {
             const chatHistory = document.querySelector('.chat-history');
-            const scrollThreshold = chatHistory.scrollHeight - chatHistory.clientHeight - 50; // Adjust based on your needs
+            const scrollThreshold = chatHistory.scrollHeight - chatHistory.clientHeight - 50; 
             if (chatHistory.scrollTop < scrollThreshold) {
                 setShowScrollButton(true);
             } else {
@@ -85,13 +83,11 @@ const Chatbot = () => {
                             <div className="chat-message">
                                 {entry.type === 'bot' ? (
                                     entry.imageUrl ? (
-                                        // Render the image if the entry contains an image URL
                                         <div className="image-container">
                                             <img src={entry.imageUrl} alt="A generated illustration" className="generated-image" />
                                         </div>
 
                                     ) : (
-                                        // Render the text if it's a regular text response
                                         <ReactMarkdown>{entry.text}</ReactMarkdown>
                                     )
                                 ) : (

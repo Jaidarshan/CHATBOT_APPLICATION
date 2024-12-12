@@ -296,7 +296,7 @@ html {
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20%;
   cursor: pointer;
   transition: background-color 0.3s ease;
   position: absolute;
@@ -313,20 +313,15 @@ html {
   outline: none;
 }
 
-/* Chat History Container */
 .chat-history {
   position: relative;
   padding-bottom: 60px;
-  /* Prevent button overlap with the input field */
 }
 
-/* Scroll Down Button Styles */
 .scroll-down-button {
   position: absolute;
   bottom: 10px;
-  /* Position the button just above the input area */
   right: 10px;
-  /* Adjust spacing from the right edge */
   background-color: #007bff;
   color: white;
   border: none;
@@ -340,7 +335,6 @@ html {
   cursor: pointer;
   transition: background-color 0.3s ease;
   z-index: 10;
-  /* Ensure the button stays above other content */
 }
 
 .scroll-down-button:hover {
