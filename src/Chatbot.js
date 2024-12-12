@@ -3,7 +3,7 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import SetApiKey from './SetApiKey';
 
-const Chatbot = () => {
+const Chatbot = ({ darkMode }) => {
     const [prompt, setPrompt] = useState('');
     const [conversation, setConversation] = useState([]);
     const [error, setError] = useState('');
@@ -55,15 +55,15 @@ const Chatbot = () => {
                 setShowScrollButton(false);
             }
         };
-    
+
         const chatHistory = document.querySelector('.chat-history');
         chatHistory.addEventListener('scroll', handleScroll);
-    
+
         return () => {
             chatHistory.removeEventListener('scroll', handleScroll);
         };
     }, []);
-    
+
 
 
     const scrollToBottom = () => {
@@ -103,7 +103,11 @@ const Chatbot = () => {
                     className={`scroll-down-button ${showScrollButton ? 'visible' : ''}`}
                     onClick={scrollToBottom}
                 >
-                    <img src='/downarraowicon.jpg' alt='Scroll down' width='24px' />
+                    <img
+                        src={darkMode ? '/downarrowwhite.jpg' : '/downarraowicon.jpg'}
+                        alt="Scroll down"
+                        width="24px"
+                    />
                 </button>
             </div>
 

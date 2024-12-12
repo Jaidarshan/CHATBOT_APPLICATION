@@ -18,7 +18,7 @@ function App() {
                 </button>
             </header>
             <main className="App-main">
-                <Chatbot />
+                <Chatbot darkMode={darkMode} />
             </main>
         </div>
     );

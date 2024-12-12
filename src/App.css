@@ -317,7 +317,7 @@ html {
 
 
 .toggle-button:hover {
-  background-color: rgba(0, 123, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .toggle-button:focus {
