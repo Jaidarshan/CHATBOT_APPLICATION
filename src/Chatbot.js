@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
-import SetApiKey from './SetApiKey'; 
+import SetApiKey from './SetApiKey';
 
 const Chatbot = () => {
     const [prompt, setPrompt] = useState('');
@@ -40,8 +40,8 @@ const Chatbot = () => {
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); 
-            handleSubmit(event); 
+            event.preventDefault();
+            handleSubmit(event);
             setPrompt('');
         }
     };
@@ -49,21 +49,22 @@ const Chatbot = () => {
     useEffect(() => {
         const handleScroll = () => {
             const chatHistory = document.querySelector('.chat-history');
-            const scrollThreshold = chatHistory.scrollHeight - chatHistory.clientHeight - 50; 
-            if (chatHistory.scrollTop < scrollThreshold) {
+            if (chatHistory.scrollTop < chatHistory.scrollHeight - chatHistory.clientHeight - 50) {
                 setShowScrollButton(true);
             } else {
                 setShowScrollButton(false);
             }
         };
-
+    
         const chatHistory = document.querySelector('.chat-history');
         chatHistory.addEventListener('scroll', handleScroll);
-
+    
         return () => {
             chatHistory.removeEventListener('scroll', handleScroll);
         };
     }, []);
+    
+
 
     const scrollToBottom = () => {
         const chatHistory = document.querySelector('.chat-history');
@@ -97,13 +98,14 @@ const Chatbot = () => {
                         </div>
                     ))
                 )}
-            </div>
 
-            {showScrollButton && (
-                <button className="scroll-down-button" onClick={scrollToBottom}>
-                    ↓
+                <button
+                    className={`scroll-down-button ${showScrollButton ? 'visible' : ''}`}
+                    onClick={scrollToBottom}
+                >
+                    <img src='/downarraowicon.jpg' alt='Scroll down' width='24px' />
                 </button>
-            )}
+            </div>
 
             <form className="chat-input-form" onSubmit={handleSubmit}>
                 <SetApiKey />
