@@ -76,7 +76,7 @@ const Chatbot = ({ darkMode }) => {
             <div className="chat-history">
                 {conversation.length === 0 ? (
                     <div className="chat-placeholder">
-                        <p>Welcome! Start the conversation by typing your question in the box below.</p>
+                        <p>Welcome! Start the conversation by typing your question in the box below.<br/><br/>You can also generate images by starting your prompt with "generate image of"</p>
                     </div>
                 ) : (
                     conversation.map((entry, index) => (

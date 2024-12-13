@@ -14,7 +14,7 @@ function App() {
             <header className="App-header">
                 <h1 className='main-heading'>AI Chatbot Application</h1>
                 <button onClick={toggleDarkMode} className="toggle-button">
-                    {darkMode ? <img src='/lightmode.jpg' alt='lightmode'/> : <img src='/darkmode.jpg' alt='darkmode' />}
+                    {darkMode ? <img src='/lightmode.jpg' alt='lightmode' /> : <img src='/darkmode.jpg' alt='darkmode' />}
                 </button>
             </header>
             <main className="App-main">

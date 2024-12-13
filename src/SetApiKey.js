@@ -78,10 +78,13 @@ const SetApiKey = () => {
                         onChange={handleMonsterInputChange}
                         style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
                     />
-                    <button type="submit" className='button'>Submit</button>
+                    <div className='setapi-buttons'>
+                        <button type="submit" className='button'>Submit</button>
+                        <button onClick={handleCloseModal} style={{ marginTop: '10px' }} className='button'>Close</button>
+                    </div>
+
                 </form>
                 {message && <p>{message}</p>}
-                <button onClick={handleCloseModal} style={{ marginTop: '10px' }} className='button'>Close</button>
             </Modal>
         </div>
     );
