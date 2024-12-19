@@ -8,6 +8,7 @@ const Chatbot = ({ darkMode }) => {
     const [conversation, setConversation] = useState([]);
     const [error, setError] = useState('');
     const [showScrollButton, setShowScrollButton] = useState(false);
+    const [modalImage, setModalImage] = useState(null);
 
     const handleInputChange = (event) => {
         setPrompt(event.target.value);
@@ -22,17 +23,16 @@ const Chatbot = ({ darkMode }) => {
         }
 
         try {
-            setConversation(prev => [...prev, { type: 'user', text: prompt }]);
+            setConversation((prev) => [...prev, { type: 'user', text: prompt }]);
 
             const res = await axios.post('http://localhost:5000/api/chat', { prompt });
             const response = res.data;
 
             if (response.image_url) {
-                setConversation(prev => [...prev, { type: 'bot', imageUrl: response.image_url }]);
+                setConversation((prev) => [...prev, { type: 'bot', imageUrl: response.image_url }]);
             } else {
-                setConversation(prev => [...prev, { type: 'bot', text: response.response }]);
+                setConversation((prev) => [...prev, { type: 'bot', text: response.response }]);
             }
-
         } catch (err) {
             setError(err.response ? err.response.data.error : 'Error sending prompt');
         }
@@ -44,6 +44,14 @@ const Chatbot = ({ darkMode }) => {
             handleSubmit(event);
             setPrompt('');
         }
+    };
+
+    const handleImageClick = (imageUrl) => {
+        setModalImage(imageUrl);
+    };
+
+    const closeModal = () => {
+        setModalImage(null);
     };
 
     useEffect(() => {
@@ -64,8 +72,6 @@ const Chatbot = ({ darkMode }) => {
         };
     }, []);
 
-
-
     const scrollToBottom = () => {
         const chatHistory = document.querySelector('.chat-history');
         chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -74,30 +80,45 @@ const Chatbot = ({ darkMode }) => {
     return (
         <div className="chat-container">
             <div className="chat-history">
-                {conversation.length === 0 ? (
-                    <div className="chat-placeholder">
-                        <p>Welcome! Start the conversation by typing your question in the box below.<br/><br/>You can also generate images by starting your prompt with "generate image of"</p>
-                    </div>
-                ) : (
-                    conversation.map((entry, index) => (
-                        <div key={index} className={`chat-entry ${entry.type}`}>
-                            <div className="chat-message">
-                                {entry.type === 'bot' ? (
-                                    entry.imageUrl ? (
-                                        <div className="image-container">
-                                            <img src={entry.imageUrl} alt="A generated illustration" className="generated-image" />
-                                        </div>
-
-                                    ) : (
-                                        <ReactMarkdown>{entry.text}</ReactMarkdown>
-                                    )
-                                ) : (
-                                    <p>{entry.text}</p>
-                                )}
-                            </div>
+            {conversation.length === 0 ? (
+    <div className="chat-placeholder">
+        <p>
+            Welcome! Start the conversation by typing your question in the box below.<br />
+            You can also generate images by starting your prompt with "generate image of"
+        </p>
+    </div>
+) : (
+    conversation.map((entry, index) => (
+        <div key={index} className={`chat-entry ${entry.type}`}>
+            <div className="chat-message">
+                {entry.type === 'bot' ? (
+                    entry.imageUrl ? (
+                        <div className="image-container">
+                            <img 
+                                src={entry.imageUrl} 
+                                alt="Generated illustration" 
+                                className="generated-image" 
+                                onClick={() => handleImageClick(entry.imageUrl)} 
+                            />
+                            {/* Download button positioned over the image */}
+                            <a 
+                                href={entry.imageUrl} 
+                                download="generated_image.jpg" 
+                                className="download-link"
+                            >
+                                <img src='download.jpg' alt='download button' width='24px' />
+                            </a>
                         </div>
-                    ))
+                    ) : (
+                        <ReactMarkdown>{entry.text}</ReactMarkdown>
+                    )
+                ) : (
+                    <p>{entry.text}</p>
                 )}
+            </div>
+        </div>
+    ))
+)}
 
                 <button
                     className={`scroll-down-button ${showScrollButton ? 'visible' : ''}`}
@@ -126,6 +147,24 @@ const Chatbot = ({ darkMode }) => {
             </form>
 
             {error && <p className="error-message"><strong>Error:</strong> {error}</p>}
+
+            {/* Modal for full-screen image */}
+            {modalImage && (
+                <div className="modal" onClick={closeModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <button className="close-button" onClick={closeModal}>X</button>
+                        <img src={modalImage} alt="Full view" className="full-image" />
+                        <a
+                            href={modalImage}
+                            download="generated_image.jpg"
+                            className="download-button"
+                        >
+                            <img src='download.jpg' alt='download button' width='32px' />
+                        </a>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };
