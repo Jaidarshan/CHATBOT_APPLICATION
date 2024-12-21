@@ -168,6 +168,17 @@ html {
   margin-right: 10px;
   resize: none;
   height: 50px;
+  font-family: 'Arial', sans-serif; 
+  font-size: 16px;             
+  color: #333;                  
+  background-color: #f9f9f9;  
+  line-height: 1.5; 
+}
+
+.chat-input:focus {
+  border-color: #007bff;      
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+  outline: none;                
 }
 
 .button {
