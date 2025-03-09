@@ -528,3 +528,84 @@ html {
 .download-link:hover {
   opacity: 1;
 }
+
+.chat-message h1 {
+  font-size: 1.6rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.chat-message h2 {
+  font-size: 1.4rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.chat-message h3 {
+  font-size: 1.2rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.chat-message h4 {
+  font-size: 1.1rem;
+  margin: 1rem 0 0.5rem;
+}
+
+.chat-message p {
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+/* Code blocks */
+.chat-message pre {
+  margin: 1rem 0; /* Adjust the margin as needed */
+  padding: 0.5rem;
+  background-color: #2f2f2f;
+  color: #f1f1f1;
+  font-family: "Courier New", Courier, monospace;
+  border-radius: 5px;
+  overflow-x: auto;
+}
+
+.chat-message code {
+  margin: 0.25rem 0; /* Slightly smaller margin for inline code */
+  padding: 0.25rem;
+  background-color: #2f2f2f;
+  color: #f1f1f1;
+  font-family: "Courier New", Courier, monospace;
+  border-radius: 3px;
+}
+
+/* Container around multi-line code blocks */
+.code-block-container {
+  position: relative;
+  margin: 1rem 0; /* space above/below code block */
+}
+
+/* "Copy" button in the top-right corner */
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  background-color: #5b5b5cf1;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.copy-button:hover {
+  background-color: #49494af1;
+}
+
+/* Code styling */
+.code-block-container pre {
+  background-color: #2f2f2f; /* or any color you prefer */
+  color: #f1f1f1;
+  font-family: "Courier New", Courier, monospace;
+  padding: 1rem;
+  border-radius: 5px;
+  overflow-x: auto;
+  margin: 0; /* remove default <pre> margin */
+}
+  
