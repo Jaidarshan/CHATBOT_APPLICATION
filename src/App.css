@@ -556,14 +556,16 @@ html {
 
 /* Code blocks */
 .chat-message pre {
-  margin: 1rem 0; /* Adjust the margin as needed */
+  margin: 1rem 0;
   padding: 0.5rem;
   background-color: #2f2f2f;
   color: #f1f1f1;
   font-family: "Courier New", Courier, monospace;
   border-radius: 5px;
   overflow-x: auto;
+  line-height: 1.2;  /* reduce line spacing */
 }
+
 
 .chat-message code {
   margin: 0.25rem 0; /* Slightly smaller margin for inline code */
@@ -600,12 +602,18 @@ html {
 
 /* Code styling */
 .code-block-container pre {
-  background-color: #2f2f2f; /* or any color you prefer */
-  color: #f1f1f1;
-  font-family: "Courier New", Courier, monospace;
-  padding: 1rem;
+  margin: 0;               /* remove default margin */
   border-radius: 5px;
   overflow-x: auto;
-  margin: 0; /* remove default <pre> margin */
+  line-height: 1.2;        /* reduce line spacing */
+  padding: 0.5rem;         /* optional: keep or adjust as needed */
 }
-  
+
+
+/* Override default line spacing for code tokens in syntax highlighted blocks */
+.code-block-container .token-line,
+.code-block-container .code-line {
+  line-height: 1.2 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

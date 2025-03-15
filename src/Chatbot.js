@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import SetApiKey from './SetApiKey';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 /**
  * Formats a single line of normal text (outside code fences) into headings, bullets, etc.
@@ -76,11 +78,15 @@ function formatResponse(text) {
 }
 
 /**
- * Custom code block renderer that shows a "Copy" button for multi‐line code blocks.
- * Inline code (e.g., `variable`) will NOT display the button.
+ * Custom code block renderer that shows a "Copy" button for multi‑line code blocks.
+ * Inline code (e.g. `variable`) will NOT display the button.
  */
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
-  // For inline code (single backticks), just render normally
+  const codeText = String(children).replace(/\n$/, '');
+  // Extract language from className (e.g., language-js)
+  const match = /language-(\w+)/.exec(className || '');
+
+  // For inline code, render normally
   if (inline) {
     return (
       <code className={className} {...props}>
@@ -89,14 +95,12 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
     );
   }
 
-  // For multi-line code blocks (triple backticks)
-  const codeText = String(children).replace(/\n$/, '');
-
+  // Multi-line code block: show syntax highlighting and Copy button
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(codeText);
       console.log('Code copied to clipboard!');
-      // Optionally, show a toast or alert here
+      // Optionally, display a toast notification here.
     } catch (err) {
       console.error('Failed to copy code:', err);
     }
@@ -104,12 +108,16 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
 
   return (
     <div className="code-block-container">
-      <button className="copy-button" onClick={handleCopy}>
-        Copy
-      </button>
-      <pre className={className} {...props}>
-        <code>{children}</code>
-      </pre>
+      <button className="copy-button" onClick={handleCopy}>Copy</button>
+      <SyntaxHighlighter
+        style={tomorrow}
+        language={match ? match[1] : ''}
+        PreTag="div"
+        customStyle={{ lineHeight: '1.2', margin: 0 }}
+        {...props}
+      >
+        {codeText}
+      </SyntaxHighlighter>
     </div>
   );
 };
@@ -128,23 +136,23 @@ const Chatbot = ({ darkMode }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError('');
-  
+
     if (!prompt.trim()) {
       setError('Please enter a prompt.');
       return;
     }
-  
     try {
-      // Append the additional instruction to the user's prompt.
-      const modifiedPrompt = `${prompt}\n\n Use Markdown headings for each section and surround your code in triple backticks.`;
-  
-      // Add user's message to the conversation (you can show the original prompt)
+      // Append additional instruction so Gemini returns Markdown formatted text.
+      const additionalInstruction = "Use Markdown headings for each section and if your response have code surround your code in triple backticks. ";
+      const modifiedPrompt = `${prompt}\n\n${additionalInstruction}`;
+
+      // Show the user's original prompt in the conversation.
       setConversation((prev) => [...prev, { type: 'user', text: prompt }]);
-  
-      // Send the modified prompt to your backend
+
+      // Send the modified prompt to your Flask backend.
       const res = await axios.post('http://localhost:5000/api/chat', { prompt: modifiedPrompt });
       const response = res.data;
-  
+
       if (response.image_url) {
         setConversation((prev) => [
           ...prev,
@@ -162,7 +170,7 @@ const Chatbot = ({ darkMode }) => {
       setPrompt('');
     }
   };
-  
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
@@ -210,10 +218,9 @@ const Chatbot = ({ darkMode }) => {
         {conversation.length === 0 ? (
           <div className="chat-placeholder">
             <p>
-              Welcome! Start the conversation by typing your question in the box
-              below.<br />
-              You can also generate images by starting your prompt with
-              "generate image of ..."
+              Welcome! Start the conversation by typing your question in the box below.
+              <br />
+              You can also generate images by starting your prompt with "generate image of ..."
             </p>
           </div>
         ) : (
@@ -234,25 +241,15 @@ const Chatbot = ({ darkMode }) => {
                         download="generated_image.jpg"
                         className="download-link"
                       >
-                        <img
-                          src="/download.jpg"
-                          alt="download button"
-                          width="24px"
-                        />
+                        <img src="/download.jpg" alt="download button" width="24px" />
                       </a>
                     </div>
                   ) : (
-                    // Render text with ReactMarkdown + code copy button
-                    <ReactMarkdown
-                      components={{
-                        code: CodeBlock, // Our custom code renderer
-                      }}
-                    >
+                    <ReactMarkdown components={{ code: CodeBlock }}>
                       {formatResponse(entry.text)}
                     </ReactMarkdown>
                   )
                 ) : (
-                  // If it's the user's message
                   <p>{entry.text}</p>
                 )}
               </div>
@@ -295,20 +292,10 @@ const Chatbot = ({ darkMode }) => {
       {modalImage && (
         <div className="modal" onClick={closeModal}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-button" onClick={closeModal}>
-              X
-            </button>
+            <button className="close-button" onClick={closeModal}>X</button>
             <img src={modalImage} alt="Full view" className="full-image" />
-            <a
-              href={modalImage}
-              download="generated_image.jpg"
-              className="download-button"
-            >
-              <img
-                src="/download.jpg"
-                alt="download button"
-                width="32px"
-              />
+            <a href={modalImage} download="generated_image.jpg" className="download-button">
+              <img src="/download.jpg" alt="download button" width="32px" />
             </a>
           </div>
         </div>
