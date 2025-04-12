@@ -82,9 +82,23 @@ function formatResponse(text) {
  * Inline code (e.g. `variable`) will NOT display the button.
  */
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
+  const [copied, setCopied] = useState(false);
   const codeText = String(children).replace(/\n$/, '');
-  // Extract language from className (e.g., language-js)
   const match = /language-(\w+)/.exec(className || '');
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(codeText);
+      console.log('Code copied to clipboard!');
+      setCopied(true);
+      // Reset the copied state after 2 seconds
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (err) {
+      console.error('Failed to copy code:', err);
+    }
+  };
 
   // For inline code, render normally
   if (inline) {
@@ -95,20 +109,9 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
     );
   }
 
-  // Multi-line code block: show syntax highlighting and Copy button
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(codeText);
-      console.log('Code copied to clipboard!');
-      // Optionally, display a toast notification here.
-    } catch (err) {
-      console.error('Failed to copy code:', err);
-    }
-  };
-
   return (
     <div className="code-block-container">
-      <button className="copy-button" onClick={handleCopy}>Copy</button>
+      <button className="copy-button" onClick={handleCopy}>{copied ? <><img src='/copied.jpg' alt='copied img' width='20px' /> Copied </> : <> <img src='/copy.jpg' alt='copy img' width='20px' /> Copy</>}</button>
       <SyntaxHighlighter
         style={tomorrow}
         language={match ? match[1] : ''}
