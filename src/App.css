@@ -554,7 +554,6 @@ html {
   line-height: 1.4;
 }
 
-/* Code blocks */
 .chat-message pre {
   margin: 1rem 0;
   padding: 0.5rem;
@@ -563,12 +562,12 @@ html {
   font-family: "Courier New", Courier, monospace;
   border-radius: 5px;
   overflow-x: auto;
-  line-height: 1.2;  /* reduce line spacing */
+  line-height: 1.2;  
 }
 
 
 .chat-message code {
-  margin: 0.25rem 0; /* Slightly smaller margin for inline code */
+  margin: 0.25rem 0; 
   padding: 0.25rem;
   background-color: #2f2f2f;
   color: #f1f1f1;
@@ -576,13 +575,11 @@ html {
   border-radius: 3px;
 }
 
-/* Container around multi-line code blocks */
 .code-block-container {
   position: relative;
-  margin: 1rem 0; /* space above/below code block */
+  margin: 1rem 0; 
 }
 
-/* "Copy" button in the top-right corner */
 .copy-button {
   position: absolute;
   top: 8px;
@@ -600,20 +597,36 @@ html {
   background-color: #49494af1;
 }
 
-/* Code styling */
 .code-block-container pre {
-  margin: 0;               /* remove default margin */
+  margin: 0;               
   border-radius: 5px;
   overflow-x: auto;
-  line-height: 1.2;        /* reduce line spacing */
-  padding: 0.5rem;         /* optional: keep or adjust as needed */
+  line-height: 1.2;        
+  padding: 0.5rem;    
 }
 
 
-/* Override default line spacing for code tokens in syntax highlighted blocks */
 .code-block-container .token-line,
 .code-block-container .code-line {
   line-height: 1.2 !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+.speak-button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  padding: 5px 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  outline: none;
+}
+
+.speak-button:hover {
+  opacity: 0.8;
+}
+
+.speak-button:active {
+  opacity: 0.6;
 }

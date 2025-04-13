@@ -1,4 +1,3 @@
-// Chatbot.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
@@ -6,30 +5,22 @@ import SetApiKey from './SetApiKey';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-/**
- * Formats a single line of normal text (outside code fences) into headings, bullets, etc.
- * (Optional – you can remove heading detection if you like.)
- */
 function formatAsTextLine(line) {
   const trimmed = line.trim();
 
-  // If line starts with '#' => treat it as a heading
   if (/^#{1,6}\s/.test(trimmed)) {
     return trimmed;
   }
 
-  // Short lines => H3 heading
   if (trimmed.length > 0 && trimmed.length < 40 && !trimmed.endsWith(':')) {
     return `### ${trimmed}`;
   }
 
-  // Lines ending with ':' => subheading (H4)
   if (trimmed.endsWith(':') && trimmed.length > 1) {
     const headingText = trimmed.slice(0, -1);
     return `#### ${headingText}`;
   }
 
-  // Bullet points
   if (/^[-*+]\s+/.test(trimmed)) {
     return '- ' + trimmed.replace(/^[-*+]\s+/, '');
   }
@@ -37,15 +28,9 @@ function formatAsTextLine(line) {
     return '- ' + trimmed.replace(/^\d+\.\s+/, '');
   }
 
-  // Otherwise, return line as-is
   return trimmed;
 }
 
-/**
- * If the text includes triple backticks, parse them literally as code fences.
- * Outside code fences, apply heading/bullet formatting.
- * If there are no triple backticks at all, treat everything as normal text.
- */
 function formatResponse(text) {
   const lines = text.split('\n');
   let inFence = false;
@@ -55,32 +40,23 @@ function formatResponse(text) {
     const line = lines[i];
     const trimmed = line.trim();
 
-    // Toggle code fence if we see ```
     if (trimmed.startsWith('```')) {
       inFence = !inFence;
-      processed.push(line); // Keep the fence line exactly
+      processed.push(line); 
     } else if (inFence) {
-      // Inside code fence, keep lines verbatim
       processed.push(line);
     } else {
-      // Outside code fence, apply heading/bullet formatting
       processed.push(formatAsTextLine(line));
     }
   }
 
-  // If we ended in a fence (missing closing ```), close it
   if (inFence) {
     processed.push('```');
   }
 
-  // Join with double newlines so ReactMarkdown interprets paragraphs/lists
   return processed.join('\n\n');
 }
 
-/**
- * Custom code block renderer that shows a "Copy" button for multi‑line code blocks.
- * Inline code (e.g. `variable`) will NOT display the button.
- */
 const CodeBlock = ({ node, inline, className, children, ...props }) => {
   const [copied, setCopied] = useState(false);
   const codeText = String(children).replace(/\n$/, '');
@@ -91,7 +67,6 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
       await navigator.clipboard.writeText(codeText);
       console.log('Code copied to clipboard!');
       setCopied(true);
-      // Reset the copied state after 2 seconds
       setTimeout(() => {
         setCopied(false);
       }, 2000);
@@ -100,7 +75,6 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
     }
   };
 
-  // For inline code, render normally
   if (inline) {
     return (
       <code className={className} {...props}>
@@ -111,7 +85,17 @@ const CodeBlock = ({ node, inline, className, children, ...props }) => {
 
   return (
     <div className="code-block-container">
-      <button className="copy-button" onClick={handleCopy}>{copied ? <><img src='/copied.jpg' alt='copied img' width='20px' /> Copied </> : <> <img src='/copy.jpg' alt='copy img' width='20px' /> Copy</>}</button>
+      <button className="copy-button" onClick={handleCopy}>
+        {copied ? (
+          <>
+            <img src="/copied.jpg" alt="copied" width="20px" /> Copied
+          </>
+        ) : (
+          <>
+            <img src="/copy.jpg" alt="copy" width="20px" /> Copy
+          </>
+        )}
+      </button>
       <SyntaxHighlighter
         style={tomorrow}
         language={match ? match[1] : ''}
@@ -131,6 +115,22 @@ const Chatbot = ({ darkMode }) => {
   const [error, setError] = useState('');
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [modalImage, setModalImage] = useState(null);
+  const [currentlySpeaking, setCurrentlySpeaking] = useState(null);
+
+  const speakText = (text) => {
+    if (currentlySpeaking === text) {
+      window.speechSynthesis.cancel();
+      setCurrentlySpeaking(null);
+    } else {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.onend = () => {
+        setCurrentlySpeaking(null);
+      };
+      window.speechSynthesis.speak(utterance);
+      setCurrentlySpeaking(text);
+    }
+  };
 
   const handleInputChange = (event) => {
     setPrompt(event.target.value);
@@ -145,14 +145,12 @@ const Chatbot = ({ darkMode }) => {
       return;
     }
     try {
-      // Append additional instruction so Gemini returns Markdown formatted text.
-      const additionalInstruction = "Use Markdown headings for each section and if your response have code surround your code in triple backticks. ";
+      const additionalInstruction =
+        'Use Markdown headings for each section and if your response have code surround your code in triple backticks. ';
       const modifiedPrompt = `${prompt}\n\n${additionalInstruction}`;
 
-      // Show the user's original prompt in the conversation.
       setConversation((prev) => [...prev, { type: 'user', text: prompt }]);
 
-      // Send the modified prompt to your Flask backend.
       const res = await axios.post('http://localhost:5000/api/chat', { prompt: modifiedPrompt });
       const response = res.data;
 
@@ -192,10 +190,7 @@ const Chatbot = ({ darkMode }) => {
   useEffect(() => {
     const handleScroll = () => {
       const chatHistory = document.querySelector('.chat-history');
-      if (
-        chatHistory.scrollTop <
-        chatHistory.scrollHeight - chatHistory.clientHeight - 50
-      ) {
+      if (chatHistory.scrollTop < chatHistory.scrollHeight - chatHistory.clientHeight - 50) {
         setShowScrollButton(true);
       } else {
         setShowScrollButton(false);
@@ -248,9 +243,22 @@ const Chatbot = ({ darkMode }) => {
                       </a>
                     </div>
                   ) : (
-                    <ReactMarkdown components={{ code: CodeBlock }}>
-                      {formatResponse(entry.text)}
-                    </ReactMarkdown>
+                    <div>
+                      <ReactMarkdown components={{ code: CodeBlock }}>
+                        {formatResponse(entry.text)}
+                      </ReactMarkdown>
+                      <button
+                        className="speak-button"
+                        style={{ marginTop: '10px' }}
+                        onClick={() => speakText(entry.text)}
+                      >
+                        {currentlySpeaking === entry.text ?
+                          <img src={darkMode ? '/stopwhite.jpg' : '/stopblack.jpg'} alt='stop' width='25px' />
+                          :
+                          <img src={darkMode ? '/texttospeechwhite.jpg' : '/texttospeechblack.jpg'} alt='speak' width='20px' />
+                        }
+                      </button>
+                    </div>
                   )
                 ) : (
                   <p>{entry.text}</p>
