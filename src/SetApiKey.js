@@ -1,3 +1,4 @@
+// SetApiKey.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import Modal from 'react-modal';
@@ -6,7 +7,7 @@ Modal.setAppElement('#root');
 
 const SetApiKey = () => {
     const [geminiApiKey, setGeminiApiKey] = useState('');
-    const [monsterApiKey, setMonsterApiKey] = useState('');
+    const [huggingFaceToken, setHuggingFaceToken] = useState('');
     const [message, setMessage] = useState('');
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -14,8 +15,8 @@ const SetApiKey = () => {
         setGeminiApiKey(event.target.value);
     };
 
-    const handleMonsterInputChange = (event) => {
-        setMonsterApiKey(event.target.value);
+    const handleHuggingFaceInputChange = (event) => {
+        setHuggingFaceToken(event.target.value);
     };
 
     const handleOpenModal = () => {
@@ -32,7 +33,7 @@ const SetApiKey = () => {
         try {
             const response = await axios.post('http://localhost:5000/api/set-api-key', {
                 api_key: geminiApiKey,
-                monster_api_key: monsterApiKey,
+                hf_token: huggingFaceToken, // <-- Send the Hugging Face token
             });
             setMessage(response.data.message);
         } catch (error) {
@@ -46,7 +47,7 @@ const SetApiKey = () => {
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={handleCloseModal}
-                contentLabel="Set API Key"
+                contentLabel="Set API Keys"
                 style={{
                     content: {
                         top: '50%',
@@ -65,24 +66,23 @@ const SetApiKey = () => {
                 <h2>Enter API Keys</h2>
                 <form onSubmit={handleSubmit}>
                     <input
-                        type="text"
+                        type="password"
                         placeholder="Enter Gemini API Key"
                         value={geminiApiKey}
                         onChange={handleGeminiInputChange}
                         style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
                     />
                     <input
-                        type="text"
-                        placeholder="Enter Monster API Key"
-                        value={monsterApiKey}
-                        onChange={handleMonsterInputChange}
+                        type="password"
+                        placeholder="Enter Hugging Face Token"
+                        value={huggingFaceToken}
+                        onChange={handleHuggingFaceInputChange}
                         style={{ width: '100%', padding: '10px', marginBottom: '10px' }}
                     />
                     <div className='setapi-buttons'>
                         <button type="submit" className='button'>Submit</button>
-                        <button onClick={handleCloseModal} style={{ marginTop: '10px' }} className='button'>Close</button>
+                        <button type="button" onClick={handleCloseModal} style={{ marginTop: '10px' }} className='button'>Close</button>
                     </div>
-
                 </form>
                 {message && <p>{message}</p>}
             </Modal>
