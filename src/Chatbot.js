@@ -149,9 +149,14 @@ const Chatbot = ({ darkMode }) => {
         'Use Markdown headings for each section and if your response have code surround your code in triple backticks. ';
       const modifiedPrompt = `${prompt}\n\n${additionalInstruction}`;
 
-      setConversation((prev) => [...prev, { type: 'user', text: prompt }]);
+      const updatedConversation = [...conversation, { type: 'user', text: prompt }];
+      setConversation(updatedConversation);
 
-      const res = await axios.post('http://localhost:5000/api/chat', { prompt: modifiedPrompt });
+      const res = await axios.post('http://localhost:5000/api/chat', { 
+        prompt: modifiedPrompt,
+        history: conversation 
+      });
+      
       const response = res.data;
 
       if (response.image_url) {
@@ -167,6 +172,7 @@ const Chatbot = ({ darkMode }) => {
       }
     } catch (err) {
       setError(err.response ? err.response.data.error : 'Error sending prompt');
+      setConversation(prev => prev.slice(0, -1)); 
     } finally {
       setPrompt('');
     }
